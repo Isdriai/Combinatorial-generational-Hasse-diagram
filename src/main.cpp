@@ -90,11 +90,28 @@ int ranka(bitset<puissance> elem){
 	}
 
  	return parcour(elem, puissance, 0, binomial(puissance, puissance-c0), c0, puissance-c0);
-
 }
 
-int unrank(){
-	
+int unrank(int i, int un){ 
+	bitset<puissance> acc;
+	int reste = puissance;
+	int nbr_un = un;
+
+	while(reste != 0){
+		int pivot = binomial(reste, nbr_un);
+		if (pivot > i )
+		{
+			acc[reste]=1;
+			reste--;
+			nbr_un--;
+		}
+		else{
+			acc[reste]=0;
+			reste--;
+		}
+	}
+
+	return (int)(acc.to_ulong());
 }
 
 int previous(){
