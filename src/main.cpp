@@ -111,33 +111,34 @@ int ranka(bitset<puissance> elem){
 int unrank(int i, int un){ 
 	bitset<puissance> acc;
 	int reste = puissance;
-	int nbr_un = un;
-	int tampon=1;
 
-	while(reste != 0){
-		int pivot = binomial(reste-1, nbr_un);
-		cout << " test pivot : " << pivot << endl;
-		cout << " i : " << i << endl;
-		cout << " reste : " << reste << endl;
-		cout << " nbr_un : " << nbr_un << endl;
-		cout << " tampon : " << tampon << endl;
-		if (pivot <= i )
-		{
-			cout << "            passage gauche " << endl;
-			acc[reste]=1;
+	while ( reste ){
+
+		int pivot = binomial(reste-1, un);
+
+		// cout << " reste : " << reste << endl;
+		// cout << " pivot : " << pivot << endl;
+		// cout << " i : " << i << endl;
+		// cout << " acc " << acc << endl << endl << endl;
+
+
+		if (i <= pivot){
 			reste--;
-			nbr_un--;
-			i-=pivot;
 		}
 		else{
-			cout << "             passage droite " << endl;
-			acc[reste]=0;
+			acc[reste-1]=1;
+			i-=binomial(reste-1,un);
+			un--;
 			reste--;
-			tampon++;
+			
 		}
 	}
 
-	cout << "mot binaire " << acc << endl ;
+	if ( un ){
+		acc[0]=1;
+	}
+
+	cout << " mot binaire : " << acc << endl ;
 
 	return (int)(acc.to_ulong());
 }
@@ -155,8 +156,8 @@ int main(int argc, char const *argv[])
 	bitset<puissance> test = bitset<puissance> (15);
 	bitset<puissance> tmp;
 	// generate(puissance, 0, tmp);
-	cout << ranka(test) << endl ;
-	// cout << unrank(2,3) << " doit faire " << 0101 << endl;
+	// cout << ranka(test) << endl ;
+	cout << unrank(2,3) << endl;
 	affiche();
 	return 0;
 }
