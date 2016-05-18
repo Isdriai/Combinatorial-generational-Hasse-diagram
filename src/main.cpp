@@ -63,16 +63,32 @@ int binomial(int n, int k){
 }
 
 int parcour(bitset<puissance> elem, int reste, int min, int max, int zero, int un){
-	if(reste == 0 ){
-		return min; // we can return max, it's the same thing
+
+	// cout << " elem : " << elem << endl ;
+	// for (int i = 0; i < puissance; ++i)
+	// {
+	// 	cout << " elem [" << i << "] : " << elem[i] << endl;
+	// }
+	// cout << " reste : " << reste << endl ;
+	// cout << " min : " << min << endl ;
+	// cout << " max : " << max << endl ;
+	// cout << " zero : " << zero << endl ;
+	// cout << " un : " << un << endl << endl << endl ;
+
+	// works with the lexicographical order
+
+
+ 	if( !zero ){
+		return min; 
 	}
 	else {
-		if (elem[reste]){
-			int bin = binomial(reste, un-1);
-			return parcour(elem, reste-1, min+bin , max , zero, un-1);
+		if (elem[reste-1]){
+			// cout << " passage vrai " << endl;
+			int bin = binomial(reste-1, un-1);
+			return parcour(elem, reste-1, min+binomial(reste-1,un) , max , zero, un-1);
 		}
 		else{
-			int bin = binomial(reste, zero-1);
+			int bin = binomial(reste-1, zero-1);
 			return parcour(elem, reste-1, min , max-bin , zero-1, un);
 		}
 				
@@ -89,27 +105,39 @@ int ranka(bitset<puissance> elem){
 		}
 	}
 
- 	return parcour(elem, puissance, 0, binomial(puissance, puissance-c0), c0, puissance-c0);
+ 	return parcour(elem, puissance, 1, binomial(puissance, puissance-c0), c0, puissance-c0);
 }
 
 int unrank(int i, int un){ 
 	bitset<puissance> acc;
 	int reste = puissance;
 	int nbr_un = un;
+	int tampon=1;
 
 	while(reste != 0){
-		int pivot = binomial(reste, nbr_un);
-		if (pivot > i )
+		int pivot = binomial(reste-1, nbr_un);
+		cout << " test pivot : " << pivot << endl;
+		cout << " i : " << i << endl;
+		cout << " reste : " << reste << endl;
+		cout << " nbr_un : " << nbr_un << endl;
+		cout << " tampon : " << tampon << endl;
+		if (pivot <= i )
 		{
+			cout << "            passage gauche " << endl;
 			acc[reste]=1;
 			reste--;
 			nbr_un--;
+			i-=pivot;
 		}
 		else{
+			cout << "             passage droite " << endl;
 			acc[reste]=0;
 			reste--;
+			tampon++;
 		}
 	}
+
+	cout << "mot binaire " << acc << endl ;
 
 	return (int)(acc.to_ulong());
 }
@@ -124,10 +152,11 @@ int next(){
 
 int main(int argc, char const *argv[])
 {
-	bitset<puissance> test = bitset<puissance> (5);
+	bitset<puissance> test = bitset<puissance> (15);
 	bitset<puissance> tmp;
 	// generate(puissance, 0, tmp);
 	cout << ranka(test) << endl ;
+	// cout << unrank(2,3) << " doit faire " << 0101 << endl;
 	affiche();
 	return 0;
 }
