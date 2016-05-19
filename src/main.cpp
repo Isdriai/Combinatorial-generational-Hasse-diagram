@@ -3,6 +3,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
+#include <set>
 
 using namespace std;
 
@@ -234,13 +235,10 @@ int next(bitset<puissance> elem){
 	else{
 		return actuel;
 	}
-
 }
 
 int aleatoire(int un){
 	srand (time(NULL));
-
-// rand() % 10 + 1;
 
 	int r = rand() % (binomial(puissance, un));
 
@@ -269,6 +267,37 @@ void list(){
 		list(i);
 		cout << endl << endl ;
 	}
+}
+
+int superieur(set<bitset<puissance>> ensemble){
+	bitset<puissance> max (count - 1);
+	bitset<puissance> tmp (0);
+
+	for (bitset<puissance> elem : ensemble)
+	{
+		tmp = tmp | elem;
+
+		if(tmp == max){
+			return (int)(tmp.to_ulong());
+		}
+	}
+
+	return (int)(tmp.to_ulong());
+}
+
+int inferieur(set<bitset<puissance>> ensemble){
+	bitset<puissance> tmp (count - 1);
+	bitset<puissance> min (0);
+
+	for (bitset<puissance> elem : ensemble)
+	{
+		tmp = tmp & elem;
+		if(tmp == min){
+			return (int)(tmp.to_ulong());
+		}
+	}
+
+	return (int)(tmp.to_ulong());
 }
 
 int main(int argc, char const *argv[])
