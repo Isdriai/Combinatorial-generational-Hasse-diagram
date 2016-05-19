@@ -1,6 +1,8 @@
 #include <iostream>
 #include <bitset>
 #include <vector>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
@@ -11,7 +13,7 @@ int previous();
 int next();
 
 const int puissance=4;
-const int count = 2 << puissance ;
+const int count = 2 << puissance-1 ;
 
 
 
@@ -183,18 +185,75 @@ int previous(bitset<puissance> elem){
 	return (int)(elem.to_ulong());
 }
 
-int next(){
-	
+int next(bitset<puissance> elem){
+
+	int prec = (int)(elem.to_ulong());
+	int pos1=-1;
+	std::vector<int> uns; 
+	bool un=false;
+
+	for (int i = 0; i < puissance; i++)
+	{
+		if (elem[i] && !un){
+			un=true;
+			pos1=i;
+		}
+		else if (!elem[i] && un){
+			break;
+		}
+		else if (elem[i]){
+			uns.push_back(pos1);
+			pos1=i;
+		}
+
+	}
+
+	int c=0;
+
+	// for (int i : uns)
+	// {
+	// 	cout << " pos : " << i << endl;
+	// }
+
+	for (int i : uns)
+	{
+		elem[i]=0;
+		elem[c]=1;
+		c++;
+	}
+
+	elem[pos1]=0;
+	elem[pos1+1]=1;
+
+	// cout << "next : " << elem << endl;
+
+	int actuel = (int)(elem.to_ulong());
+
+	// cout << " count " << count << " actuel : " << actuel << endl;
+
+	if(actuel >= count){
+		return prec;
+	}
+	else{
+		return actuel;
+	}
+
+}
+
+int random(int r){
+	// srand (time(NULL));
+
+	// return unrank(, r)
 }
 
 int main(int argc, char const *argv[])
 {
-	bitset<puissance> test = bitset<puissance> (11);
+	bitset<puissance> test = bitset<puissance> (15);
 	bitset<puissance> tmp;
 	// generate(puissance, 0, tmp);
 	// cout << ranka(test) << endl ;
 	//cout << unrank(3,3) << endl;
 	//affiche();
-	cout << previous(test) << endl ;
+	cout << next(test) << endl ;
 	return 0;
 }
