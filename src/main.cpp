@@ -143,8 +143,44 @@ int unrank(int i, int un){
 	return (int)(acc.to_ulong());
 }
 
-int previous(){
+int previous(bitset<puissance> elem){
 
+	int pos1=-1;
+	bool zero=false;
+	std::vector<int> uns; 
+
+	for (int i = 0 ; i < puissance; i++)
+	{
+		if (elem[i] && zero){
+			pos1=i;
+			break;
+		}
+		else if (elem[i]){
+			uns.push_back(i);
+		}
+		else if (!elem[i]){
+			zero=true;
+		}
+	}
+
+	int c=1;
+
+	for (int i : uns)
+	{
+		if ( (pos1-1) - i > 1 && !elem[pos1-c-1] ){
+
+			elem[pos1-c-1]=1;
+			elem[i]=0;
+			c++;
+		}
+	}
+
+	elem[pos1]=0;
+	elem[pos1-1]=1;
+
+	cout << "previous : " << elem << endl;
+
+	return (int)(elem.to_ulong());
 }
 
 int next(){
@@ -153,11 +189,12 @@ int next(){
 
 int main(int argc, char const *argv[])
 {
-	bitset<puissance> test = bitset<puissance> (15);
+	bitset<puissance> test = bitset<puissance> (11);
 	bitset<puissance> tmp;
 	// generate(puissance, 0, tmp);
 	// cout << ranka(test) << endl ;
-	cout << unrank(2,3) << endl;
-	affiche();
+	//cout << unrank(3,3) << endl;
+	//affiche();
+	cout << previous(test) << endl ;
 	return 0;
 }
