@@ -307,16 +307,17 @@ int main(int argc, char const *argv[])
 	*/
 
 	///////////////// tests inf et sup /////////////////
-	bitset<puissance> un = bitset<puissance> (1);
-	bitset<puissance> cinq = bitset<puissance> (5);
-	bitset<puissance> neuf = bitset<puissance> (9);
-	vector< bitset<puissance> > ensemble_test;
-	ensemble_test.push_back(un);
-	ensemble_test.push_back(cinq);
-	ensemble_test.push_back(neuf);
 
-	cout << " elem sup de l'ensemble test est " << superieur(ensemble_test) << endl ;
-	cout << " elem inf de l'ensemble test est " << inferieur(ensemble_test) << endl ;
+	vector< bitset<puissance> > ensemble_test (
+	{
+	bitset<puissance> (1), 
+	bitset<puissance> (5), 
+	bitset<puissance> (9)
+	});
+	
+
+	cout << " elem sup de l'ensemble test est " << superieur(ensemble_test) << endl;
+	cout << " elem inf de l'ensemble test est " << inferieur(ensemble_test) << endl;
 
 	return 0;
 }
