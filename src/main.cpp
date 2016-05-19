@@ -14,15 +14,6 @@ const int count = 2 << puissance-1 ;
 
 vector<vector<bitset<puissance>>> solutions (puissance+1);
 
-void affiche () {
-	for ( std::vector<bitset<puissance>> elem : solutions){
-		for (bitset<puissance> e : elem)
-		{
-			cout << e << endl ;
-		}
-	}
-}
-
 template <size_t puissance>
 
 
@@ -269,7 +260,7 @@ void list(){
 	}
 }
 
-int superieur(set<bitset<puissance>> ensemble){
+int superieur(vector<bitset<puissance>> ensemble){
 	bitset<puissance> max (count - 1);
 	bitset<puissance> tmp (0);
 
@@ -285,7 +276,7 @@ int superieur(set<bitset<puissance>> ensemble){
 	return (int)(tmp.to_ulong());
 }
 
-int inferieur(set<bitset<puissance>> ensemble){
+int inferieur(vector<bitset<puissance>> ensemble){
 	bitset<puissance> tmp (count - 1);
 	bitset<puissance> min (0);
 
@@ -302,17 +293,30 @@ int inferieur(set<bitset<puissance>> ensemble){
 
 int main(int argc, char const *argv[])
 {
+	/*
 	bitset<puissance> test = bitset<puissance> (0);
 	bitset<puissance> tmp;
-	// generate(puissance, 0, tmp);
-	// cout << ranka(test) << endl;
-	//cout << unrank(3,3) << endl;
-	//affiche();
-	// cout << next(test) << endl ;
-	//list(1);
+	 generate(puissance, 0, tmp);
+	 cout << ranka(test) << endl;
+	cout << unrank(3,3) << endl;
+	cout << next(test) << endl ;
+	list(1);
 	list();
-	//cout << next(test) << endl ;
+	cout << next(test) << endl ;
 	cout << aleatoire(2) << endl ;
+	*/
+
+	///////////////// tests inf et sup /////////////////
+	bitset<puissance> un = bitset<puissance> (1);
+	bitset<puissance> cinq = bitset<puissance> (5);
+	bitset<puissance> neuf = bitset<puissance> (9);
+	vector< bitset<puissance> > ensemble_test;
+	ensemble_test.push_back(un);
+	ensemble_test.push_back(cinq);
+	ensemble_test.push_back(neuf);
+
+	cout << " elem sup de l'ensemble test est " << superieur(ensemble_test) << endl ;
+	cout << " elem inf de l'ensemble test est " << inferieur(ensemble_test) << endl ;
 
 	return 0;
 }
