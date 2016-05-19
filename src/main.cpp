@@ -6,12 +6,6 @@
 
 using namespace std;
 
-void generate(int, int);
-void list();
-int unrank();
-int previous();
-int next();
-
 const int puissance=4;
 const int count = 2 << puissance-1 ;
 
@@ -43,10 +37,6 @@ void generate(int run, int endroit,bitset<puissance> acc){
 		generate(run-1, endroit, acc);
 		generate(run-1, endroit+1, un);
 	}
-}
-
-void list(){
-
 }
 
 int factorial(int n){
@@ -111,6 +101,7 @@ int ranka(bitset<puissance> elem){
 }
 
 int unrank(int i, int un){ 
+	i++;
 	bitset<puissance> acc;
 	int reste = puissance;
 
@@ -140,7 +131,7 @@ int unrank(int i, int un){
 		acc[0]=1;
 	}
 
-	cout << " mot binaire : " << acc << endl ;
+	// cout << " mot binaire : " << acc << endl ;
 
 	return (int)(acc.to_ulong());
 }
@@ -180,7 +171,7 @@ int previous(bitset<puissance> elem){
 	elem[pos1]=0;
 	elem[pos1-1]=1;
 
-	cout << "previous : " << elem << endl;
+	// cout << "previous : " << elem << endl;
 
 	return (int)(elem.to_ulong());
 }
@@ -188,6 +179,12 @@ int previous(bitset<puissance> elem){
 int next(bitset<puissance> elem){
 
 	int prec = (int)(elem.to_ulong());
+
+	if(prec == 0){ // ugly
+		return 0;
+	}
+
+
 	int pos1=-1;
 	std::vector<int> uns; 
 	bool un=false;
@@ -240,20 +237,53 @@ int next(bitset<puissance> elem){
 
 }
 
-int random(int r){
-	// srand (time(NULL));
+int aleatoire(int un){
+	srand (time(NULL));
 
-	// return unrank(, r)
+// rand() % 10 + 1;
+
+	int r = rand() % (binomial(puissance, un));
+
+	return unrank(r, un);
+}
+
+void list(int i){
+	bitset<puissance> premier (unrank(0,i));
+	bitset<puissance> tmp;
+	bitset<puissance> suivant;
+
+	 do {
+
+	 	tmp = premier;
+	 	suivant = next(tmp);
+
+	 	premier = suivant;
+	 	cout << tmp << endl;
+
+	 } while( suivant != tmp);
+}
+
+void list(){
+	for (int i = 0; i <= puissance; i++)
+	{
+		list(i);
+		cout << endl << endl ;
+	}
 }
 
 int main(int argc, char const *argv[])
 {
-	bitset<puissance> test = bitset<puissance> (15);
+	bitset<puissance> test = bitset<puissance> (0);
 	bitset<puissance> tmp;
 	// generate(puissance, 0, tmp);
-	// cout << ranka(test) << endl ;
+	// cout << ranka(test) << endl;
 	//cout << unrank(3,3) << endl;
 	//affiche();
-	cout << next(test) << endl ;
+	// cout << next(test) << endl ;
+	//list(1);
+	list();
+	//cout << next(test) << endl ;
+	cout << aleatoire(2) << endl ;
+
 	return 0;
 }
