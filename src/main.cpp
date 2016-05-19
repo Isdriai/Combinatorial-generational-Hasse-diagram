@@ -48,17 +48,6 @@ int binomial(int n, int k){
 
 int parcour(bitset<puissance> elem, int reste, int min, int max, int zero, int un){
 
-	// cout << " elem : " << elem << endl ;
-	// for (int i = 0; i < puissance; ++i)
-	// {
-	// 	cout << " elem [" << i << "] : " << elem[i] << endl;
-	// }
-	// cout << " reste : " << reste << endl ;
-	// cout << " min : " << min << endl ;
-	// cout << " max : " << max << endl ;
-	// cout << " zero : " << zero << endl ;
-	// cout << " un : " << un << endl << endl << endl ;
-
 	// works with the lexicographical order
 
 
@@ -67,7 +56,6 @@ int parcour(bitset<puissance> elem, int reste, int min, int max, int zero, int u
 	}
 	else {
 		if (elem[reste-1]){
-			// cout << " passage vrai " << endl;
 			int bin = binomial(reste-1, un-1);
 			return parcour(elem, reste-1, min+binomial(reste-1,un) , max , zero, un-1);
 		}
@@ -92,7 +80,7 @@ int ranka(bitset<puissance> elem){
  	return parcour(elem, puissance, 1, binomial(puissance, puissance-c0), c0, puissance-c0);
 }
 
-int unrank(int i, int un){ 
+bitset<puissance> unrank(int i, int un){ 
 	i++;
 	bitset<puissance> acc;
 	int reste = puissance;
@@ -100,12 +88,6 @@ int unrank(int i, int un){
 	while ( reste ){
 
 		int pivot = binomial(reste-1, un);
-
-		// cout << " reste : " << reste << endl;
-		// cout << " pivot : " << pivot << endl;
-		// cout << " i : " << i << endl;
-		// cout << " acc " << acc << endl << endl << endl;
-
 
 		if (i <= pivot){
 			reste--;
@@ -123,12 +105,10 @@ int unrank(int i, int un){
 		acc[0]=1;
 	}
 
-	// cout << " mot binaire : " << acc << endl ;
-
-	return (int)(acc.to_ulong());
+	return acc;
 }
 
-int previous(bitset<puissance> elem){
+bitset<puissance> previous(bitset<puissance> elem){
 
 	int pos1=-1;
 	bool zero=false;
@@ -163,14 +143,12 @@ int previous(bitset<puissance> elem){
 	elem[pos1]=0;
 	elem[pos1-1]=1;
 
-	// cout << "previous : " << elem << endl;
-
-	return (int)(elem.to_ulong());
+	return elem;
 }
 
-int next(bitset<puissance> elem){
+bitset<puissance> next(bitset<puissance> elem){
 
-	int prec = (int)(elem.to_ulong());
+	bitset<puissance> prec = elem;
 
 	if(prec == 0){ // ugly
 		return 0;
@@ -199,11 +177,6 @@ int next(bitset<puissance> elem){
 
 	int c=0;
 
-	// for (int i : uns)
-	// {
-	// 	cout << " pos : " << i << endl;
-	// }
-
 	for (int i : uns)
 	{
 		elem[i]=0;
@@ -214,26 +187,22 @@ int next(bitset<puissance> elem){
 	elem[pos1]=0;
 	elem[pos1+1]=1;
 
-	// cout << "next : " << elem << endl;
-
 	int actuel = (int)(elem.to_ulong());
-
-	// cout << " count " << count << " actuel : " << actuel << endl;
 
 	if(actuel >= count){
 		return prec;
 	}
 	else{
-		return actuel;
+		return elem;
 	}
 }
 
-int aleatoire(int un){
+bitset<puissance> aleatoire(int un){
 	srand (time(NULL));
 
 	int r = rand() % (binomial(puissance, un));
 
-	return unrank(r, un);
+	return bitset<puissance> (unrank(r, un));
 }
 
 void list(int i){
@@ -260,7 +229,7 @@ void list(){
 	}
 }
 
-int superieur(vector<bitset<puissance>> ensemble){
+bitset<puissance> superieur(vector<bitset<puissance>> ensemble){
 	bitset<puissance> max (count - 1);
 	bitset<puissance> tmp (0);
 
@@ -269,14 +238,14 @@ int superieur(vector<bitset<puissance>> ensemble){
 		tmp = tmp | elem;
 
 		if(tmp == max){
-			return (int)(tmp.to_ulong());
+			return tmp;
 		}
 	}
 
-	return (int)(tmp.to_ulong());
+	return tmp;
 }
 
-int inferieur(vector<bitset<puissance>> ensemble){
+bitset<puissance> inferieur(vector<bitset<puissance>> ensemble){
 	bitset<puissance> tmp (count - 1);
 	bitset<puissance> min (0);
 
@@ -284,16 +253,16 @@ int inferieur(vector<bitset<puissance>> ensemble){
 	{
 		tmp = tmp & elem;
 		if(tmp == min){
-			return (int)(tmp.to_ulong());
+			return tmp;
 		}
 	}
 
-	return (int)(tmp.to_ulong());
+	return tmp;
 }
 
 int main(int argc, char const *argv[])
 {
-	/*
+	
 	bitset<puissance> test = bitset<puissance> (0);
 	bitset<puissance> tmp;
 	 generate(puissance, 0, tmp);
@@ -304,7 +273,7 @@ int main(int argc, char const *argv[])
 	list();
 	cout << next(test) << endl ;
 	cout << aleatoire(2) << endl ;
-	*/
+	
 
 	///////////////// tests inf et sup /////////////////
 
